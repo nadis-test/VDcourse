@@ -32,20 +32,14 @@ public class Circle extends Shape {
             return true;   // если передали тот же самый объект
         if (someObject == null)
             return false;  // если передали пустой объект
-        if (!getClass().equals(someObject.getClass()))
+        if  ( !(someObject instanceof Circle) )
             return false;  // если передали объект не того класса, с которым сравниваем
 
         Circle circle = (Circle) someObject;
 
-        if (this.getCoordX() != circle.getCoordX()) {
-            System.out.println("CoordX are not equal");
-            return false;  // если первая координата не совпадает - выход
-            }
-        if (this.getCoordY() != circle.getCoordY()) {
-            System.out.println("CoordY are not equal");
-            return false; // если вторая координата не совпадает - выход
-            }
-        if (this.radius != circle.getRadius()) {
+        if (!super.equals(someObject)) return false; //вызываем метод супер-класса для сравнения координат (чтобы не дублировать)
+
+        if (this.radius != circle.radius) {  // сравниваем только ЗНАЧЕНИЯ полей, использование методов опасно модификацией значения
             System.out.println("Radius are not equal");
             return false; // если радиус не совпадает - выход
         }
