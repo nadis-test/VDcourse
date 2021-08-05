@@ -22,12 +22,13 @@ public abstract class Shape {
         return  coord_y;
     }
 
+    @Override
     public boolean equals(Object someObject){
         if (this == someObject)
             return true;   // если передали тот же самый объект
         if (someObject == null)
             return false;  // если передали пустой объект
-        if ( !getClass().equals(someObject.getClass()) )
+        if ( !(someObject instanceof Shape) )
             return false;  // если передали объект не того класса, с которым сравниваем
 
         Shape shape = (Shape) someObject;
