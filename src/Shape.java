@@ -1,4 +1,4 @@
-public abstract class Shape {
+public abstract class Shape implements Printable {
 
     private double coord_x;
     private double coord_y;
@@ -12,7 +12,8 @@ public abstract class Shape {
 
     abstract String defineType();
 
-    abstract void printDimensions();
+    @Override
+    public void printDimensions(){System.out.println("ShapeX=" + coord_x +" ShapeY="+ coord_y);}
 
     public double getCoordX() {
         return  coord_x;

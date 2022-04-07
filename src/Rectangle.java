@@ -29,7 +29,7 @@ public class Rectangle extends Shape {
     }
 
     @Override
-    void printDimensions(){
+    public void printDimensions(){
         System.out.println("Width=" + width+"; Length=" + length);
     }
 

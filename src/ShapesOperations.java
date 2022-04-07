@@ -50,7 +50,15 @@ class Main2 {
             }
         }
 
-    }
+        System.out.println("==== печатаем площади через интерефейс =============================");
+        for (int i = 0; i < shape.length; i++) {
+            Printer(shape[i]);
+        }
+
+        }
+
+
+    public static void Printer(Printable printable){ printable.printDimensions(); }
 }
 
 

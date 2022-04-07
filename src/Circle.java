@@ -22,7 +22,7 @@ public class Circle extends Shape {
     }
 
     @Override
-    void printDimensions(){
+    public void printDimensions(){
         System.out.println("Radius=" + radius);
     }
 
