@@ -7,7 +7,8 @@ public class DealsHistoryTest{
 
     @Test
     public void testDealNotFoundInHistory() throws AssertionFailure{
-        DealsHistory test_history_container = new DealsHistory();
+        DealsHistory test_history_container = new DealsHistory(5);
+        fillHistoryContainer(test_history_container);
         CfdDeal test_deal = new CfdDeal(Trend.Up, 10L, new Date(), "Gold", "12345", 2, 1.23D, 1.35D);
         test_history_container.addDealToContainer(test_deal);
         BaseDeal test_deal_2 = test_history_container.getDealByUUID("12345");
@@ -16,7 +17,8 @@ public class DealsHistoryTest{
 
     @Test
     public void testFoundDealIsEqual() throws AssertionFailure{
-        DealsHistory test_history_container = new DealsHistory();
+        DealsHistory test_history_container = new DealsHistory(5);
+        fillHistoryContainer(test_history_container);
         CfdDeal test_deal = new CfdDeal(Trend.Up, 10L, new Date(), "Gold", "12345", 2, 1.23D, 1.35D);
         test_history_container.addDealToContainer(test_deal);
         BaseDeal test_deal_2 = test_history_container.getDealByUUID("12345");
@@ -24,8 +26,18 @@ public class DealsHistoryTest{
     }
 
     @Test
+    public void testDealNotAddedToFullContainer() throws AssertionFailure{
+        DealsHistory test_history_container = new DealsHistory(4);
+        fillHistoryContainer(test_history_container);
+        CfdDeal test_deal = new CfdDeal(Trend.Up, 10L, new Date(), "Gold", "12345", 2, 1.23D, 1.35D);
+        test_history_container.addDealToContainer(test_deal);
+        BaseDeal test_deal_2 = test_history_container.getDealByUUID("12345");
+        assertEquals(null, test_deal_2, "unexpected added deal in full container");
+    }
+
+    @Test
     public void testAddDeals() throws AssertionFailure {
-        DealsHistory test_history_container = new DealsHistory();
+        DealsHistory test_history_container = new DealsHistory(4);
         CfdDeal test_deal_0 = new CfdDeal(Trend.Up, 10L, new Date(), "Gold", "1", 2, 1.23D, 1.35D);
         CfdDeal test_deal_1 = new CfdDeal(Trend.Up, 20L, new Date(), "Gold", "2", 2, 1.23D, 1.35D);
         CfdDeal test_deal_2 = new CfdDeal(Trend.Up, 30L, new Date(), "Gold", "3", 2, 1.23D, 1.35D);
@@ -55,8 +67,26 @@ public class DealsHistoryTest{
     }
 
     @Test
-    public void testDeletedDealFromHistoryNotFound(){
+    public void testDeletedDealFromHistoryByUUIDNotFound(){
         DealsHistory test_history_container = new DealsHistory(4);
+        fillHistoryContainer(test_history_container);
+
+        test_history_container.deleteDealFromContainer("2");
+        assertEquals(null, test_history_container.getDealByUUID("2"), "Deleted deal still found in history");
+    }
+
+    @Test
+    public void testDeletedDealFromHistoryByDealNotFound(){
+        DealsHistory test_history_container = new DealsHistory(5);
+        fillHistoryContainer(test_history_container);
+        CfdDeal test_deal_4 = new CfdDeal(Trend.Up, 40L, new Date(), "Gold", "5", 2, 1.23D, 1.35D);
+        test_history_container.addDealToContainer(test_deal_4);
+
+        test_history_container.deleteDealFromContainer(test_deal_4);
+        assertEquals(null, test_history_container.getDealByUUID("5"), "Deleted deal still found in history");
+    }
+
+    public static void fillHistoryContainer(DealsHistory test_history_container){
         CfdDeal test_deal_0 = new CfdDeal(Trend.Up, 10L, new Date(), "Gold", "1", 2, 1.23D, 1.35D);
         CfdDeal test_deal_1 = new CfdDeal(Trend.Up, 20L, new Date(), "Gold", "2", 2, 1.23D, 1.35D);
         CfdDeal test_deal_2 = new CfdDeal(Trend.Up, 30L, new Date(), "Gold", "3", 2, 1.23D, 1.35D);
@@ -65,9 +95,6 @@ public class DealsHistoryTest{
         test_history_container.addDealToContainer(test_deal_1);
         test_history_container.addDealToContainer(test_deal_2);
         test_history_container.addDealToContainer(test_deal_3);
-
-        test_history_container.deleteDealFromContainer("2");
-        assertEquals(null, test_history_container.getDealByUUID("2"), "Deleted deal still found in history");
     }
 
     public static void assertEquals(Object expected, Object actual, String message) throws AssertionFailure{
