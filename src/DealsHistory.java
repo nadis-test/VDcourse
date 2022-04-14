@@ -39,19 +39,23 @@ public class DealsHistory {
     }
 
     public void deleteDealFromContainer(BaseDeal deal){
+        this.deleteDealFromContainer(deal.uuid);
+    }
+
+    public void deleteDealFromContainer(String uuid){
         int c = 0;
         boolean isDealFound = false;
 
         while ((c < dealsContainer.length) && !isDealFound && (dealsContainer[c] != null)){
-            if (dealsContainer[c].uuid.equals(deal.uuid)) //== сравнивает нам ссылки, а uuid это строка, а не значение
-                {
-                    dealsContainer[c] = null;
-                    isDealFound = true;
-                    while ((c < dealsContainer.length - 1) && (dealsContainer[c + 1] != null)) {
-                        dealsContainer[c] = dealsContainer[c + 1];
-                        c++;
-                    }
+            if (dealsContainer[c].uuid.equals(uuid)) //== сравнивает нам ссылки, а uuid это строка, а не значение
+            {
+                dealsContainer[c] = null;
+                isDealFound = true;
+                while ((c < dealsContainer.length - 1) && (dealsContainer[c + 1] != null)) {
+                    dealsContainer[c] = dealsContainer[c + 1];
+                    c++;
                 }
+            }
             c++;
         }
 
