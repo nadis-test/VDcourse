@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sun.jvm.hotspot.utilities.AssertionFailure;
 import java.util.Date;
@@ -25,15 +26,7 @@ public class DealsHistoryTest{
         assertEquals(test_deal, test_deal_2, "deals are not equal");
     }
 
-    @Test
-    public void testDealNotAddedToFullContainer() throws AssertionFailure{
-        DealsHistory test_history_container = new DealsHistory(4);
-        fillHistoryContainer(test_history_container);
-        CfdDeal test_deal = new CfdDeal(Trend.Up, 10L, new Date(), "Gold", "12345", 2, 1.23D, 1.35D);
-        test_history_container.addDealToContainer(test_deal);
-        BaseDeal test_deal_2 = test_history_container.getDealByUUID("12345");
-        assertEquals(null, test_deal_2, "unexpected added deal in full container");
-    }
+
 
     @Test
     public void testAddDeals() throws AssertionFailure {
@@ -49,21 +42,6 @@ public class DealsHistoryTest{
             test_history_container.addDealToContainer(test_deal_3);
         }
          catch (Throwable t){throw new AssertionFailure("Unexpected error when adding deal to the full history collection"); }
-    }
-
-    @Test
-    public void testLastDealNotChangedByAddingNewDeal(){
-        DealsHistory test_history_container = new DealsHistory(3);
-        CfdDeal test_deal_0 = new CfdDeal(Trend.Up, 10L, new Date(), "Gold", "1", 2, 1.23D, 1.35D);
-        CfdDeal test_deal_1 = new CfdDeal(Trend.Up, 20L, new Date(), "Gold", "2", 2, 1.23D, 1.35D);
-        CfdDeal test_deal_2 = new CfdDeal(Trend.Up, 30L, new Date(), "Gold", "3", 2, 1.23D, 1.35D);
-        CfdDeal test_deal_3 = new CfdDeal(Trend.Up, 40L, new Date(), "Gold", "4", 2, 1.23D, 1.35D);
-        test_history_container.addDealToContainer(test_deal_0);
-        test_history_container.addDealToContainer(test_deal_1);
-        test_history_container.addDealToContainer(test_deal_2);
-        test_history_container.addDealToContainer(test_deal_3);
-        int last_deal_index = test_history_container.getCapacity()-1;
-        assertEquals(test_history_container.getDealByIndex(last_deal_index), test_deal_2, "Last deal was unexpectedly replaced");
     }
 
     @Test
@@ -84,6 +62,14 @@ public class DealsHistoryTest{
 
         test_history_container.deleteDealFromContainer(test_deal_4);
         assertEquals(null, test_history_container.getDealByUUID("5"), "Deleted deal still found in history");
+    }
+
+    @Test
+    public void testDeletedNonExistentDeal(){
+        DealsHistory test_history_container = new DealsHistory(4);
+        fillHistoryContainer(test_history_container);
+
+      Assertions.assertFalse(test_history_container.deleteDealFromContainer("5"), "Trying to delete unexistent deal");
     }
 
     public static void fillHistoryContainer(DealsHistory test_history_container){

@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class DealsHistory {
-    DealsHistory(int deals_container_size){
+    DealsHistory(int deals_container_size) {
         dealsContainer = new ArrayList<BaseDeal>(deals_container_size);
     }
 
-    DealsHistory(){
+    DealsHistory() {
         dealsContainer = new ArrayList<BaseDeal>(DEALS_CONTAINER_SIZE);
     }
 
@@ -18,46 +18,40 @@ public class DealsHistory {
     private List<BaseDeal> dealsContainer;
 
 
-    public BaseDeal getDealByIndex(int index){
+    public BaseDeal getDealByIndex(int index) {
         return dealsContainer.get(index);
     }
 
-    public BaseDeal getDealByUUID(String uuid){
+    private int getIndexDealByUUID(String uuid) {
         int index = 0;
-        while ((index < dealsContainer.size()) && Objects.nonNull(dealsContainer.get(index)) && !dealsContainer.get(index).uuid.equals(uuid))
+        while (index < dealsContainer.size() && !dealsContainer.get(index).uuid.equals(uuid))
             index++;
-        if (index < dealsContainer.size()) return dealsContainer.get(index);
+        return index < dealsContainer.size() ? index : -1;
+    }
+
+    public BaseDeal getDealByUUID(String uuid) {
+        int index = getIndexDealByUUID(uuid);
+        if (index != -1) return dealsContainer.get(index);
         else return null;
     }
 
-    public void addDealToContainer(BaseDeal deal){
-
-        int c = 0;
-
-        while ((c < dealsContainer.size()) && Objects.nonNull(dealsContainer.get(c)) && !dealsContainer.get(c).uuid.equals(deal.uuid))
-            c++;
-        if (c < dealsContainer.size()) dealsContainer.set(c, deal);
-        else System.out.println("dealsContainer is full");
+    public void addDealToContainer(BaseDeal deal) {
+        int index = getIndexDealByUUID(deal.uuid);
+        if (index != -1) dealsContainer.set(index, deal);
+        else dealsContainer.add(deal);
     }
 
-    public void deleteDealFromContainer(BaseDeal deal){
+    public void deleteDealFromContainer(BaseDeal deal) {
         this.deleteDealFromContainer(deal.uuid);
     }
 
-    public boolean deleteDealFromContainer(String uuid){
-
-        for (int c =0; c < dealsContainer.size(); c++) {
-            if (dealsContainer.get(c).uuid.equals(uuid)) //== сравнивает нам ссылки, а uuid это строка, а не значение
-            {
-                dealsContainer.remove(c);
-                return true;
-            }
-        }
-        return false;
+    public boolean deleteDealFromContainer(String uuid) {
+        int index = getIndexDealByUUID(uuid);
+        if (index != -1) {
+            dealsContainer.remove(index);
+            return true;
+        } else return false;
     }
 
-    public int getCapacity(){
-        return dealsContainer.size();
-    }
 
 }
