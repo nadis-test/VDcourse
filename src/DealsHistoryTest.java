@@ -8,7 +8,7 @@ public class DealsHistoryTest{
 
     @Test
     public void testDealNotFoundInHistory() throws AssertionFailure{
-        DealsHistory test_history_container = new DealsHistory(5);
+        DealsHistory test_history_container = new DealsHistory();
         fillHistoryContainer(test_history_container);
         CfdDeal test_deal = new CfdDeal(Trend.Up, 10L, new Date(), "Gold", "12345", 2, 1.23D, 1.35D);
         test_history_container.addDealToContainer(test_deal);
@@ -18,7 +18,7 @@ public class DealsHistoryTest{
 
     @Test
     public void testFoundDealIsEqual() throws AssertionFailure{
-        DealsHistory test_history_container = new DealsHistory(5);
+        DealsHistory test_history_container = new DealsHistory();
         fillHistoryContainer(test_history_container);
         CfdDeal test_deal = new CfdDeal(Trend.Up, 10L, new Date(), "Gold", "12345", 2, 1.23D, 1.35D);
         test_history_container.addDealToContainer(test_deal);
@@ -29,7 +29,7 @@ public class DealsHistoryTest{
 
     @Test
     public void testDeletedDealFromHistoryByUUIDNotFound(){
-        DealsHistory test_history_container = new DealsHistory(4);
+        DealsHistory test_history_container = new DealsHistory();
         fillHistoryContainer(test_history_container);
 
         test_history_container.deleteDealFromContainer("2");
@@ -38,7 +38,7 @@ public class DealsHistoryTest{
 
     @Test
     public void testDeletedDealFromHistoryByDealNotFound(){
-        DealsHistory test_history_container = new DealsHistory(5);
+        DealsHistory test_history_container = new DealsHistory();
         fillHistoryContainer(test_history_container);
         CfdDeal test_deal_4 = new CfdDeal(Trend.Up, 40L, new Date(), "Gold", "5", 2, 1.23D, 1.35D);
         test_history_container.addDealToContainer(test_deal_4);
@@ -49,7 +49,7 @@ public class DealsHistoryTest{
 
     @Test
     public void testDeletedNonExistentDeal(){
-        DealsHistory test_history_container = new DealsHistory(4);
+        DealsHistory test_history_container = new DealsHistory();
         fillHistoryContainer(test_history_container);
 
       Assertions.assertFalse(test_history_container.deleteDealFromContainer("5"), "Trying to delete unexistent deal");
